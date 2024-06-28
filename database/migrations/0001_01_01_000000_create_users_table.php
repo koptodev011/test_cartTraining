@@ -15,11 +15,26 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->rememberToken();
+            $table->tinyInteger('role')->nullable();
+            $table->tinyInteger('is_delete')->default(0);
+            $table->string('type')->default('fixed');
+            $table->integer('shift')->nullable();
+            $table->string('fcm_token')->nullable();
+            $table->string('push_notification')->nullable();
+            $table->rememberToken()->nullable();
+            $table->string('profile_photo_path', 2048)->nullable();
+            $table->string('registration_no');
+            $table->string('tz')->nullable();
+            $table->json('meta')->nullable();
             $table->timestamps();
         });
+        
+
+       
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
