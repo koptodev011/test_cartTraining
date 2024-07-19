@@ -27,6 +27,9 @@ class User extends Authenticatable
         'is_delete',
         'type',
         'shift',
+        'sclary',
+        'branch',
+        'plan_id',
         'fcm_token',
         'push_notificatio',
         'profile_photo_path',
@@ -35,7 +38,13 @@ class User extends Authenticatable
         'tz',
         'meta',
     ];
+ 
 
+    public function attendance()
+    {
+        return $this->hasMany(Attendance::class, 'user_id', 'id');
+    }
+    
    
     /**
      * The attributes that should be hidden for serialization.
