@@ -77,8 +77,6 @@ class UserController extends Controller
 
     public function editProfile(Request $request) {
         $id = $request->user()->id;
-    
-        // Validate incoming request data
         $validator = Validator::make($request->all(), [
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($id)],
             'mobile_number' => ['required', 'string', 'min:10'],
@@ -88,8 +86,6 @@ class UserController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         }
-    
-        // Find the user by ID
         $user = User::findOrFail($id);
     
         // Handle profile photo upload
@@ -99,17 +95,13 @@ class UserController extends Controller
             $profilePhoto->move(public_path('profile_photos'), $profilePhotoName);
             $profilePhotoPath = 'profile_photos/' . $profilePhotoName;
     
-            // Update profile photo path in the user record
             $user->profile_photo_path = $profilePhotoPath;
         }
-    
-        // Update user's email and mobile number using the update method
         $user->update([
             'email' => $request->input('email'),
             'phone' => $request->input('mobile_number'),
         ]);
     
-        // Respond with a success message
         return response()->json(['message' => 'Profile updated successfully'], 200);
     }
     
