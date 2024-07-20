@@ -61,9 +61,7 @@ class VideoUploadController extends Controller
    
     public function editvideodetails(Request $request)
 {
-   
     $id = $request->id;
-
     $videodetails = Video::find($id);
     return view('editvideoupload', compact('videodetails'));
 }
@@ -102,6 +100,57 @@ public function updatevideodetails(Request $request, $id)
     $plan->save();
     return redirect()->route('planeManagement')->with('success', 'User updated successfully.');
 }
+
+
+
+public function getStudentVideo(Request $request)
+{
+    $studentVideos = Video::where('role', 1)->get();
+
+    if ($studentVideos->isEmpty()) {
+        return response()->json(['message' => 'Student videos not found'], 404);
+    }
+
+    $videos = [];
+    foreach ($studentVideos as $studentVideo) {
+        $videoPath = url('upload/' . $studentVideo->video);
+
+        $videos[] = [
+            
+            'video' => $studentVideo,
+            'video_path' => $videoPath,
+        ];
+    }
+
+    return response()->json($videos);
+}
+
+
+
+public function getTrainervideo(Request $request)
+{
+    $studentVideos = Video::where('role', 2)->get();
+
+    if ($studentVideos->isEmpty()) {
+        return response()->json(['message' => 'Student videos not found'], 404);
+    }
+
+    $videos = [];
+    foreach ($studentVideos as $studentVideo) {
+        $videoPath = url('upload/' . $studentVideo->video);
+
+        $videos[] = [
+            
+            'video' => $studentVideo, // Include the entire $studentVideo object
+            'video_path' => $videoPath,
+        ];
+    }
+
+    return response()->json($videos);
+}
+
+
+
 
 
     
