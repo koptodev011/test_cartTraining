@@ -82,7 +82,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($id)],
             'mobile_number' => ['required', 'string', 'min:10'],
-            'profile_photo' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'profile_photo' => 'image|mimes:jpeg,png,jpg',
         ]);
     
         if ($validator->fails()) {
@@ -103,18 +103,16 @@ class UserController extends Controller
             $user->profile_photo_path = $profilePhotoPath;
         }
     
-        // Update user's email and mobile number
-        $user->email = $request->input('email');
-        $user->phone = $request->input('mobile_number');
-    
-        // Save the updated user record
-        $user->save();
+        // Update user's email and mobile number using the update method
+        $user->update([
+            'email' => $request->input('email'),
+            'phone' => $request->input('mobile_number'),
+        ]);
     
         // Respond with a success message
         return response()->json(['message' => 'Profile updated successfully'], 200);
     }
     
-
     public function setFcm(Request $request)
     {
         $request->validate([
