@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\VideoUploadController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\Api\Allocatedstdent;
 
 Route::get('/user', function (Request $request) {
@@ -45,5 +46,12 @@ Route::post('/feedback', [Api\Allocatedstdent::class, 'feedback']);
 
 
 //Expense section route
-Route::post('/addExpense', [Api\Allocatedstdent::class, 'feedback']);
+Route::middleware(['auth:sanctum'])->group(function () {
+Route::post('/addExpense', [ExpenseController::class, 'addExpense']);
+Route::get('/Fetchexpense', [ExpenseController::class, 'Fetchexpense']); //Fextch Expese 
+
+});
+Route::post('/editExpense', [ExpenseController::class, 'editExpense']);
+Route::post('/update', [ExpenseController::class, 'Update']);
+Route::post('/delete', [ExpenseController::class, 'deleteExpense']);
 
