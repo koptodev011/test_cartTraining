@@ -55,3 +55,14 @@ Route::post('/editExpense', [ExpenseController::class, 'editExpense']);
 Route::post('/update', [ExpenseController::class, 'Update']);
 Route::post('/delete', [ExpenseController::class, 'deleteExpense']);
 
+//Test Management
+
+Route::get('/FetchAllTests', [TestController::class, 'FetchAllTests']);
+
+
+Route::middleware(['auth:sanctum'])->group(function () { 
+    Route::post('/Taketest',[TestController::class, 'Taketest']); 
+    Route::get('/TestHistory',[TestController::class, 'TestHistory']); 
+});
+Route::get('/road-signs', [Api\RoadSignController::class, 'index']);
+Route::get('/Sub-signs-description', [Api\RoadSignController::class, 'SubsignsDescription']);

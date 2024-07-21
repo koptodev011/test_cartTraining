@@ -14,6 +14,7 @@ use PDF;
 use App\Models\Branch;
 use App\Models\Question;
 use App\Models\Test;
+use App\Models\Result;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -137,7 +138,7 @@ class TestController extends Controller
         return redirect()->route('viewquestions');
     }
 
-
+    
 
     public function editQuestion(Request $request)
     {
@@ -159,8 +160,112 @@ class TestController extends Controller
         echo("Deleted");
         // return redirect()->route('editQuestion')->with('success', 'User updated successfully.');
     }
-    public function testing(){
-echo("Working");
+   
+
+    public function FetchAllTests(Request $request)
+    {
+        $uniqueTestIds = Question::distinct()->pluck('test_id')->toArray();
+        $questionsByTestId = [];
+
+        foreach ($uniqueTestIds as $testId) {
+            $test = Test::find($testId);
+            $testName = $test ? $test->test_title : 'Test not found';
+            
+            $questions = Question::where('test_id', $testId)->inRandomOrder()->get();
+
+            $questionsByTestId[$testName] = $questions;
+        }
+
+        return response()->json([
+            'questions_by_test_id' => $questionsByTestId
+        ]);
     }
 
+
+    public function Taketest(Request $request) {
+        $data = $request->json()->all();
+        $responseData = [];
+        $user = $request->user(); // Assuming you are using Laravel's authentication system
+        foreach ($data as $record) {
+            // Find the question based on test_id and question_id
+            $question = Question::where('test_id', $record['test_id'])
+                                ->where('id', $record['question_id'])
+                                ->first();
+         
+            if ($question) {
+               
+                // Create a new instance of Result model
+                $result = new Result();
+                
+                // Set properties of Result model
+                $result->user_id = $user->id;
+              
+                $result->test_id = $record['test_id']; // Access $record, not $data
+             
+                $result->question_id = $record['question_id'];
+              
+                if ($question->answer == $record['answer']) {
+                    $result->check = 0; // Correct answer
+                } else {
+                    $result->check = 1; // Incorrect answer
+                }
+                
+
+                // Save the result to database
+                $result->save();
+            
+                $responseData[] = [
+                    'message' => 'Record received successfully',
+                    'data' => $record
+                ];
+            } else {
+                $responseData[] = [
+                    'message' => 'Question not found for test_id ' . $record['test_id'] . ' and question_id ' . $record['question_id'],
+                    'data' => $record
+                ];
+            }
+        }
+        
+        return response()->json(['message' => 'Test Submitted successfully']);
+    }
+
+ 
+
+
+    public function TestHistory(Request $request) {
+        $user = $request->user();
+       
+        // Fetch unique dates from the database
+        $uniqueDates = Result::selectRaw('DATE(created_at) as date')
+                             ->distinct()
+                             ->pluck('date')
+                             ->toArray();
+        
+        $resultsByDate = [];
+    
+        foreach ($uniqueDates as $date) {
+            // Count total questions for the current date
+            $total_questions = Result::where('user_id', $user->id)
+                                     ->whereDate('created_at', $date)
+                                     ->count();
+            
+            // Fetch results for the current date and count total marks
+            $results = Result::where('user_id', $user->id)
+                             ->where('check', 0)
+                             ->whereDate('created_at', $date)
+                             ->get();
+            
+            $total_marks = $results->count();
+            
+            // Store results in $resultsByDate array
+            $resultsByDate[] = [
+                'date' => $date,
+                'total_questions' => $total_questions,
+                'total_marks' => $total_marks,
+            ];
+        }
+        
+        return response()->json($resultsByDate);
+    }
+   
 }

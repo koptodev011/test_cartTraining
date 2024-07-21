@@ -22,6 +22,7 @@ class StudentController extends Controller
 {
     public function student(){
         $user = Auth::user();
+        
         $branch = Branch::all();
         $plans = Plane::where('active', 0)->get();
         
