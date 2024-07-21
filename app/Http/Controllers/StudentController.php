@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Branch;
 use App\Models\Plane;
 use App\Models\Payment;
+use App\Models\Attendance;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Storage;
 
@@ -241,5 +242,18 @@ public function deletedstudentlist($id)
     Plane::where('id', $id)->update(['active' => 1]);
     return redirect()->route('planeManagement')->with('success', 'User updated successfully.');
 }
+
+public function studentAttendanse(Request $request){
+    $user = $request->user();
+    $attendance = new Attendance();
+    $attendance->user_id=$user->id;
+    $attendance->shift=$user->shift;
+    $attendance->status=0;
+    $attendance->save();
+
+    return response()->json(['message' => "Attendance Added Successifully"]);
+    
+}
+
 
 }

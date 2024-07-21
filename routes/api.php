@@ -6,6 +6,7 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\VideoUploadController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\Api\Allocatedstdent;
 
 Route::get('/user', function (Request $request) {
@@ -66,3 +67,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 Route::get('/road-signs', [Api\RoadSignController::class, 'index']);
 Route::get('/Sub-signs-description', [Api\RoadSignController::class, 'SubsignsDescription']);
+
+//Trainer Attendanse
+Route::middleware(['auth:sanctum'])->group(function () { 
+Route::post('/studentAttendanse', [StudentController::class, 'studentAttendanse']);
+});
+
