@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tests', function (Blueprint $table) {
+        Schema::create('road_signs', function (Blueprint $table) {
             $table->id();
-            $table->string('test_title')->nullable();
-            $table->integer('test_day')->nullable();
-            $table->tinyInteger('is_delete')->default(1);
-            $table->string('Time')->nullable();
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->foreign('parent_id')->references('id')->on('road_signs')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tests');
+        Schema::dropIfExists('road_signs');
     }
 };

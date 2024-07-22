@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Branch;
 use App\Models\Plane;
 use App\Models\Payment;
+use App\Models\Attendance;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Storage;
 
@@ -22,6 +23,7 @@ class StudentController extends Controller
 {
     public function student(){
         $user = Auth::user();
+        
         $branch = Branch::all();
         $plans = Plane::where('active', 0)->get();
         
@@ -240,5 +242,37 @@ public function deletedstudentlist($id)
     Plane::where('id', $id)->update(['active' => 1]);
     return redirect()->route('planeManagement')->with('success', 'User updated successfully.');
 }
+
+
+
+
+public function studentAttendanse(Request $request)
+{
+    // Validate incoming request parameters
+    $validator = Validator::make($request->all(), [
+        'id' => 'required|integer|exists:users,id',
+    ]);
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 400);
+    }
+    $id = $request->id;
+    $user = User::find($id);
+
+    if (!$user) {
+        return response()->json(['error' => 'User not found'], 404);
+    }
+
+    // Create new Attendance record
+    $attendance = new Attendance();
+    $attendance->user_id = $user->id;
+    $attendance->shift = $user->shift;
+    $attendance->status = 0; // Assuming default status is 0 (or 'absent')
+    $attendance->role=$user->role;
+    $attendance->save();
+
+    return response()->json(['message' => "Attendance added successfully"]);
+}
+
+
 
 }

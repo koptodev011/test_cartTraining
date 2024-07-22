@@ -23,6 +23,9 @@ return new class extends Migration
             $table->tinyInteger('is_delete')->default(0);
             $table->string('type')->default('fixed');
             $table->integer('shift')->nullable();
+            $table->integer('sclary')->nullable();
+            $table->integer('branch')->nullable();
+            $table->tinyInteger('plan_id')->nullable();
             $table->string('fcm_token')->nullable();
             $table->string('push_notification')->nullable();
             $table->rememberToken()->nullable();

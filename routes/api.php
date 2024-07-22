@@ -6,7 +6,11 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\VideoUploadController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\PlaneManagementController;
 use App\Http\Controllers\Api\Allocatedstdent;
+use App\Http\Controllers\Api\FeedbackController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -55,3 +59,32 @@ Route::post('/editExpense', [ExpenseController::class, 'editExpense']);
 Route::post('/update', [ExpenseController::class, 'Update']);
 Route::post('/delete', [ExpenseController::class, 'deleteExpense']);
 
+//Test Management
+
+Route::get('/FetchAllTests', [TestController::class, 'FetchAllTests']);
+
+
+Route::middleware(['auth:sanctum'])->group(function () { 
+    Route::post('/Taketest',[TestController::class, 'Taketest']); 
+    Route::get('/TestHistory',[TestController::class, 'TestHistory']); 
+});
+Route::get('/road-signs', [Api\RoadSignController::class, 'index']);
+Route::get('/Sub-signs-description', [Api\RoadSignController::class, 'SubsignsDescription']);
+
+//Trainer Attendanse
+Route::middleware(['auth:sanctum'])->group(function () { 
+Route::post('/studentAttendanse', [StudentController::class, 'studentAttendanse']);
+Route::post('/employeeAttendanse', [EmployeeController::class, 'employeeAttendanse']);
+});
+Route::get('/AllCourseDetails', [PlaneManagementController::class, 'AllCourseDetails']);
+
+
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/UpgradeCourse', [PlaneManagementController::class, 'UpgradeCourse']);
+ });
+
+
+ Route::middleware(['auth:sanctum'])->group(function () {  
+    Route::post('/TrainerFeedback', [Api\FeedbackController::class, 'TrainerFeedback']);
+ });

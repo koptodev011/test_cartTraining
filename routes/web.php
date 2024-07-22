@@ -148,6 +148,8 @@ Route::post('/addTest', [App\Http\Controllers\TestController::class,'addTest'])-
 Route::get('/editTest', [App\Http\Controllers\TestController::class, 'editTest'])->name('editTest');
 Route::get('/viewquestions', [App\Http\Controllers\TestController::class, 'viewquestions'])->name('viewquestions');
 Route::post('/addQuestion', [App\Http\Controllers\TestController::class,'addQuestion'])->name('addQuestion')->middleware('auth');
+Route::get('/editQuestion', [App\Http\Controllers\TestController::class, 'editQuestion'])->name('editQuestion');
+Route::get('/deleteQuestion', [App\Http\Controllers\TestController::class, 'deleteQuestion'])->name('deletequestion');
 
 //Allocate Students Route
 Route::get('/PresentTeachers', [App\Http\Controllers\StudentAllocationController::class, 'PresentTeachers'])->name('PresentTeachers');
