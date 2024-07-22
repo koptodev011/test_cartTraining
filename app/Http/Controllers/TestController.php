@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use PDF;
+use App\Models\Attendance;
 use App\Models\Branch;
 use App\Models\Question;
 use App\Models\Test;
@@ -182,52 +183,60 @@ class TestController extends Controller
     }
 
 
-    public function Taketest(Request $request) {
+    public function takeTest(Request $request) {
+        // Extract JSON data from the request
         $data = $request->json()->all();
+        
+        // Initialize response array
         $responseData = [];
-        $user = $request->user(); // Assuming you are using Laravel's authentication system
-        foreach ($data as $record) {
-            // Find the question based on test_id and question_id
-            $question = Question::where('test_id', $record['test_id'])
+    
+        // Retrieve authenticated user
+        $user = $request->user();
+        
+        // Iterate through each record in the JSON data
+        foreach ($data['questions'] as $record) {
+            // Fetch the question from the database
+            $question = Question::where('test_id', $data['test_id'])
                                 ->where('id', $record['question_id'])
                                 ->first();
-         
+    
             if ($question) {
-               
-                // Create a new instance of Result model
+                // Initialize a new Result instance
                 $result = new Result();
-                
-                // Set properties of Result model
                 $result->user_id = $user->id;
-              
-                $result->test_id = $record['test_id']; // Access $record, not $data
-             
+                $result->test_id = $data['test_id'];
                 $result->question_id = $record['question_id'];
-              
+        
+                // Compare user answer with correct answer
                 if ($question->answer == $record['answer']) {
                     $result->check = 0; // Correct answer
                 } else {
                     $result->check = 1; // Incorrect answer
                 }
-                
-
-                // Save the result to database
+    
+                // Save the result
                 $result->save();
-            
+    
+                // Add successful response data
                 $responseData[] = [
-                    'message' => 'Record received successfully',
-                    'data' => $record
+                    'test_id' => $data['test_id'],
+                    'question_id' => $record['question_id'],
                 ];
             } else {
+                // Add error response data if question is not found
                 $responseData[] = [
-                    'message' => 'Question not found for test_id ' . $record['test_id'] . ' and question_id ' . $record['question_id'],
-                    'data' => $record
+                    'message' => 'Question not found for test_id ' . $data['test_id'] . ' and question_id ' . $record['question_id'],
+                    'test_id' => $data['test_id'],
+                    'question_id' => $record['question_id'],
                 ];
             }
         }
-        
-        return response()->json(['message' => 'Test Submitted successfully']);
+    
+        // Return JSON response with appropriate message and data
+        return response()->json(['message' => 'Test submitted successfully', 'data' => $responseData]);
     }
+    
+    
 
  
 

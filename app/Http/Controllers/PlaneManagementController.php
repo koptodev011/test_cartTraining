@@ -143,7 +143,40 @@ class PlaneManagementController extends Controller
         return redirect()->route('planeManagement')->with('success', 'User updated successfully.');
     }
 
+   
+    public function allCourseDetails(Request $request)
+    {
+        $planes = Plane::where('active', 0)->get();
+        return response()->json([
+            'planes' => $planes,
+        ]);
+    }
 
+
+
+    public function UpgradeCourse(Request $request){
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'registration_no' => 'required|string',
+            'email' => 'required|email',
+            'plan_id' => 'required|integer',
+        ]);
+    
+        try {
+            $user = $request->user();
+            if ($user->registration_no !== $validatedData['registration_no'] || $user->email !== $validatedData['email']) {
+                return response()->json(['error' => 'Registration number or email does not match.'], 400);
+            }
+    
+            $user->update(['plan_id' => $validatedData['plan_id']]);
+            
+            return response()->json(['message' => 'Plan upgraded successfully']);
+    
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to upgrade plan. Please try again.'], 500);
+        }
+    }
+    
 
     
 }

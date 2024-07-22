@@ -7,7 +7,10 @@ use App\Http\Controllers\VideoUploadController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\PlaneManagementController;
 use App\Http\Controllers\Api\Allocatedstdent;
+use App\Http\Controllers\Api\FeedbackController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -71,5 +74,17 @@ Route::get('/Sub-signs-description', [Api\RoadSignController::class, 'SubsignsDe
 //Trainer Attendanse
 Route::middleware(['auth:sanctum'])->group(function () { 
 Route::post('/studentAttendanse', [StudentController::class, 'studentAttendanse']);
+Route::post('/employeeAttendanse', [EmployeeController::class, 'employeeAttendanse']);
 });
+Route::get('/AllCourseDetails', [PlaneManagementController::class, 'AllCourseDetails']);
 
+
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/UpgradeCourse', [PlaneManagementController::class, 'UpgradeCourse']);
+ });
+
+
+ Route::middleware(['auth:sanctum'])->group(function () {  
+    Route::post('/TrainerFeedback', [Api\FeedbackController::class, 'TrainerFeedback']);
+ });

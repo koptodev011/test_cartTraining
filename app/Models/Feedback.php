@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Feedback extends Model
 {
     use HasFactory;
+    // protected $fillable = ['name', 'description', 'parent_id'];
+
 }

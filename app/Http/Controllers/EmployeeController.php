@@ -12,7 +12,7 @@ use Illuminate\Validation\ValidationException;
 use PDF;
 use App\Models\Branch;
 use RealRashid\SweetAlert\Facades\Alert;
-
+use App\Models\Attendance;
 use Illuminate\Support\Facades\Auth;
 
 class EmployeeController extends Controller
@@ -197,5 +197,19 @@ public function deletedemployeelist($id)
     Plane::where('id', $id)->update(['active' => 1]);
     return redirect()->route('planeManagement')->with('success', 'User updated successfully.');
 }
+
+
+public function employeeAttendanse(Request $request){
+    $user = $request->user();
+    $attendance = new Attendance();
+    $attendance->user_id=$user->id;
+    $attendance->shift=$user->shift;
+    $attendance->status=0;
+    $attendance->role=$user->role;
+    $attendance->save();
+    return response()->json(['message' => "Attendance Added Successifully"]);
+    
+}
+
 
 }
