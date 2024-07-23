@@ -37,6 +37,7 @@
 <body>
 
     @section('content')
+    @include('sweetalert::alert')
     <div id="kt_content_container" class="d-flex flex-column-fluid align-items-start container-xxl">
         <!--begin::Post-->
         <div class="content flex-row-fluid" id="kt_content">
@@ -70,20 +71,7 @@
                     <div class="card-toolbar">
                         <!--begin::Toolbar-->
                         <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
-                            <!--begin::Filter-->
-                            <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click"
-                                data-kt-menu-placement="bottom-end">
-                                <!--begin::Svg Icon | path: icons/duotune/general/gen031.svg-->
-                                <span class="svg-icon svg-icon-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none">
-                                        <path
-                                            d="M19.0759 3H4.72777C3.95892 3 3.47768 3.83148 3.86067 4.49814L8.56967 12.6949C9.17923 13.7559 9.5 14.9582 9.5 16.1819V19.5072C9.5 20.2189 10.2223 20.7028 10.8805 20.432L13.8805 19.1977C14.2553 19.0435 14.5 18.6783 14.5 18.273V13.8372C14.5 12.8089 14.8171 11.8056 15.408 10.964L19.8943 4.57465C20.3596 3.912 19.8856 3 19.0759 3Z"
-                                            fill="black" />
-                                    </svg>
-                                </span>
-                                <!--end::Svg Icon-->Filter
-                            </button>
+                         
                             <!--begin::Menu 1-->
                             <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true">
                                 <!--begin::Header-->
@@ -104,10 +92,10 @@
                                             data-kt-user-table-filter="role" data-hide-search="true">
                                             <option></option>
                                             <option value="Student">Student</option>
-                                            
+
                                         </select>
                                     </div>
-                                  
+
                                     <div class="d-flex justify-content-end">
                                         <button type="reset"
                                             class="btn btn-light btn-active-light-primary fw-bold me-2 px-6"
@@ -118,6 +106,23 @@
                                     </div>
                                 </div>
                             </div>
+                            @auth
+                            @if(auth()->user()->role == 3)
+                            <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal"
+                                data-bs-target="#kt_modal_add_deletedstudents">
+                                <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                                <span class="svg-icon svg-icon-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none">
+                                        <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1"
+                                            transform="rotate(-90 11.364 20.364)" fill="black" />
+                                        <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="black" />
+                                    </svg>
+                                </span>
+                                Deleted Students
+                            </button>
+                            @endif
+                            @endauth
                             <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal"
                                 data-bs-target="#kt_modal_export_users">
                                 <span class="svg-icon svg-icon-2">
@@ -236,8 +241,7 @@
                                             <!--end::Input group-->
                                             <!--begin::Actions-->
                                             <div class="text-center">
-                                                <button type="reset" class="btn btn-light me-3"
-                                                    data-kt-users-modal-action="cancel">Discard</button>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
                                                 <button type="submit" class="btn btn-primary"
                                                     data-kt-users-modal-action="submit">
                                                     <span class="indicator-label">Submit</span>
@@ -351,7 +355,7 @@
                                                         class="form-control form-control-solid mb-3 mb-lg-0" />
                                                 </div>
 
-                                                
+
                                                 <div class="fv-row mb-7">
                                                     <label class="required fw-bold fs-6 mb-2">Shift</label>
                                                     <select name="user_shift"
@@ -360,10 +364,13 @@
                                                         <option value="2">1:00 To 4:00</option>
                                                     </select>
                                                 </div>
-                                                
+
+                                              
+
+
+
                                                 <div class="text-center pt-15">
-                                                    <button type="reset" class="btn btn-light me-3"
-                                                        data-kt-users-modal-action="cancel">Discard</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
 
 
                                                     <button type="submit" class="btn btn-primary">
@@ -421,7 +428,7 @@
                             <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                                 <!--begin::Form-->
 
-                                
+
                                 <form method="POST" id="kt_modal_add_user_form" class="form" action="/submit-form891"
                                     enctype="multipart/form-data">
                                     @csrf
@@ -484,8 +491,7 @@
                                                 class="form-control form-control-solid mb-3 mb-lg-0" />
                                         </div>
                                         <div class="text-center pt-15">
-                                            <button type="reset" class="btn btn-light me-3"
-                                                data-kt-users-modal-action="cancel">Discard</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
 
 
                                             <button type="submit" class="btn btn-primary">
@@ -547,7 +553,7 @@
                 <thead>
 
                     <tr class="text-start text-muted fw-bolder fs-7 text-uppercase gs-0">
-                       
+
                         <th class="min-w-125px">User</th>
                         <th class="min-w-125px">Role</th>
                         <th class="min-w-125px">Email</th>
@@ -560,7 +566,7 @@
                 <tbody class="text-gray-600 fw-bold">
                     @foreach ($student as $user)
                     <tr>
-                       
+
                         <td class="d-flex align-items-center">
                             <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
                                 <a href="../../demo2/dist/apps/user-management/users/view.html">
@@ -570,7 +576,7 @@
                                             class="w-100" />
                                     </div>
                                 </a>
-                            </div>>
+                            </div>
                             <div class="d-flex flex-column">
                                 <a href="../../demo2/dist/apps/user-management/users/view.html"
                                     class="text-gray-800 text-hover-primary mb-1">{{ $user->name }}</a>
@@ -585,7 +591,7 @@
                         <td>
                             <div class="badge badge-light fw-bolder">{{ $user->registration_no }}</div>
                         </td>
-                        <td>{{ $user->shift }}</</td>
+                        <td>{{ $user->shift }}</< /td>
 
 
                         <td class="text-end">
@@ -606,14 +612,16 @@
 
 
                                 <div class="menu-item px-3">
-                                 
-                                        <a class="menu-link py-3" href="{{ route('editstudent', ['id' => $user->id]) }}">Edit</a>
+
+                                    <a class="menu-link py-3"
+                                        href="{{ route('editstudent', ['id' => $user->id]) }}">Edit</a>
 
                                 </div>
 
 
                                 <div class="menu-item px-3">
-                                   <a class="menu-link px-3" href="{{ route('deletestudent', ['id' => $user->id]) }}">Delete</a>
+                                <a class="menu-link px-3"
+                                href="{{ route('deletestudent', ['id' => $user->id]) }}">Delete</a>        
                                 </div>
                             </div>
                         </td>
@@ -631,8 +639,52 @@
     </div>
     <!--end::Wrapper-->
     </div>
-    <!--end::Page-->
+    
     </div>
+
+
+    <div class="modal fade" id="kt_modal_add_deletedstudents" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable mw-10000ypx">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title fw-bolder">Deleted Students</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="min-w-60px">Sr. No.</th>
+                                    <th class="min-w-120px">Employee Name</th>
+                                    <th class="min-w-100px">Employee Email</th>
+                                    <th class="min-w-60px">Phone</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ( $deletedstudentlist as $key => $user)
+                                <tr>
+                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $user->email }}</td>
+                                    <td>{{ $user->phone }}</td>
+                                   
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+
 
 
 

@@ -35,8 +35,8 @@
 </head>
 
 <body>
-
     @section('content')
+    @include('sweetalert::alert')
     <div id="kt_content_container" class="d-flex flex-column-fluid align-items-start container-xxl">
         <!--begin::Post-->
         <div class="content flex-row-fluid" id="kt_content">
@@ -84,17 +84,29 @@
                                 </span>
                                 <!--end::Svg Icon-->Filter
                             </button>
-                            <!--begin::Menu 1-->
+                            @auth
+                            @if(auth()->user()->role == 3)
+                            <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal"
+                                data-bs-target="#kt_modal_add_deletedstudents">
+                                <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                                <span class="svg-icon svg-icon-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none">
+                                        <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1"
+                                            transform="rotate(-90 11.364 20.364)" fill="black" />
+                                        <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="black" />
+                                    </svg>
+                                </span>
+                                Deleted Employees
+                            </button>
+                            @endif
+                            @endauth
                             <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true">
                                 <!--begin::Header-->
                                 <div class="px-7 py-5">
                                     <div class="fs-5 text-dark fw-bolder">Filter Options</div>
                                 </div>
-                                <!--end::Header-->
-                                <!--begin::Separator-->
                                 <div class="separator border-gray-200"></div>
-                                <!--end::Separator-->
-                                <!--begin::Content-->
                                 <div class="px-7 py-5" data-kt-user-table-filter="form">
                                     <!--begin::Input group-->
                                     <div class="mb-10">
@@ -104,7 +116,7 @@
                                             data-kt-user-table-filter="role" data-hide-search="true">
                                             <option></option>
                                             <option value="Trainer">Trainer</option>
-                                            <option value="Receptionist">Receptionist</option>
+                                            <option value="Manager">Manager</option>
                                         </select>
                                     </div>
                                     
@@ -134,10 +146,10 @@
                                             fill="#C4C4C4" />
                                     </svg>
                                 </span>
-                                <!--end::Svg Icon-->Export
+                                Export
                             </button>
-                            <!--end::Export-->
-                            <!--begin::Add user-->
+
+                            
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#kt_modal_add_user">
                                 <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
@@ -192,8 +204,6 @@
                                         </div>
                                         <!--end::Close-->
                                     </div>
-                                    <!--end::Modal header-->
-                                    <!--begin::Modal body-->
 
 
 
@@ -222,12 +232,8 @@
                                                 <select name="role" data-control="select2"
                                                     data-placeholder="Select a role" data-hide-search="true"
                                                     class="form-select form-select-solid fw-bolder">
-                                                    <option></option>
-                                                    <option value="1">Trainer</option>
-                                                    <option value="Analyst">Analyst</option>
-                                                    <option value="Developer">Developer</option>
-                                                    <option value="Support">Support</option>
-                                                    <option value="Trial">Trial</option>
+                                                    <option value="2">Trainer</option>
+                                                    <option value="3">Manager</option>
                                                 </select>
                                             </div>
 
@@ -241,16 +247,14 @@
                                                     data-placeholder="Select a format" data-hide-search="true"
                                                     class="form-select form-select-solid fw-bolder">
                                                     <option></option>
-                                                    <option value="excel">Excel</option>
                                                     <option value="1">PDF</option>
-                                                    <option value="cvs">CVS</option>
-                                                    <option value="zip">ZIP</option>
+                                                    <option value="2">Excel</option>
+                                                   
                                                 </select>
                                                 <!--end::Input-->
                                             </div>
                                             <div class="text-center">
-                                                <button type="reset" class="btn btn-light me-3"
-                                                    data-kt-users-modal-action="cancel">Discard</button>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
                                                 <button type="submit" class="btn btn-primary">
                                                     <span class="indicator-label">Submit</span>
                                                     <span class="indicator-progress">Please wait...
@@ -297,15 +301,7 @@
                                         <h2 class="fw-bolder">Add Employee</h2>
                                         <div class="btn btn-icon btn-sm btn-active-icon-primary"
                                             data-kt-users-modal-action="close">
-                                            <span class="svg-icon svg-icon-1">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none">
-                                                    <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1"
-                                                        transform="rotate(-45 6 17.3137)" fill="black" />
-                                                    <rect x="7.41422" y="6" width="16" height="2" rx="1"
-                                                        transform="rotate(45 7.41422 6)" fill="black" />
-                                                </svg>
-                                            </span>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                     </div>
                                     <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
@@ -376,6 +372,11 @@
                                                         class="form-control form-control-solid mb-3 mb-lg-0" />
                                                 </div>
                                                 <div class="fv-row mb-7">
+                                                    <label class="required fw-bold fs-6 mb-2">sclary</label>
+                                                    <input type="number" name="user_sclary"
+                                                        class="form-control form-control-solid mb-3 mb-lg-0" />
+                                                </div>
+                                                <div class="fv-row mb-7">
                                                     <label class="required fw-bold fs-6 mb-2">password</label>
                                                     <input type="password" name="user_password"
                                                         class="form-control form-control-solid mb-3 mb-lg-0" />
@@ -386,7 +387,7 @@
                                                     <select name="user_role"
                                                         class="form-select form-select-solid mb-3 mb-lg-0">
                                                         <option value="2">Trainer</option>
-                                                        <option value="3">Receptionist</option>
+                                                        <option value="3">Manager</option>
                                                     </select>
                                                 </div>
 
@@ -398,11 +399,18 @@
                                                         <option value="2">1:00 To 4:00</option>
                                                     </select>
                                                 </div>
+                                                <div class="fv-row mb-7">
+                                                    <label class="required fw-bold fs-6 mb-2">Branch</label>
+                                                    <select name="user_branch"
+                                                        class="form-select form-select-solid mb-3 mb-lg-0">
+                                                        @foreach ($branch as $branch)
+                                                        <option value="{{ $branch->id }}">{{ $branch->branch_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
 
                                                 <div class="text-center pt-15">
-                                                    <button type="reset" class="btn btn-light me-3"
-                                                        data-kt-users-modal-action="cancel">Discard</button>
-
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
 
                                                     <button type="submit" class="btn btn-primary">
                                                         <!-- <button type="submit" class="btn btn-primary"
@@ -512,8 +520,7 @@
                                                 class="form-control form-control-solid mb-3 mb-lg-0" />
                                         </div>
                                         <div class="text-center pt-15">
-                                            <button type="reset" class="btn btn-light me-3"
-                                                data-kt-users-modal-action="cancel">Discard</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
 
 
                                             <button type="submit" class="btn btn-primary">
@@ -598,7 +605,7 @@
                                             class="w-100" />
                                     </div>
                                 </a>
-                            </div>>
+                            </div>
                             <div class="d-flex flex-column">
                                 <a href="../../demo2/dist/apps/user-management/users/view.html"
                                     class="text-gray-800 text-hover-primary mb-1">{{ $user->name }}</a>
@@ -667,6 +674,45 @@
     <!--end::Page-->
     </div>
 
+    <div class="modal fade" id="kt_modal_add_deletedstudents" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable mw-10000ypx">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title fw-bolder">Deleted Employees</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="min-w-60px">Sr. No.</th>
+                                    <th class="min-w-120px">Employee Name</th>
+                                    <th class="min-w-100px">Employee Email</th>
+                                    <th class="min-w-60px">Phone</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ( $deletedemployeelist as $key => $user)
+                                <tr>
+                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $user->email }}</td>
+                                    <td>{{ $user->phone }}</td>
+                                   
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
