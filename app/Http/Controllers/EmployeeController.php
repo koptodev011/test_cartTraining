@@ -63,26 +63,25 @@ class EmployeeController extends Controller
 
 
     public function createEmployee(Request $request){
+     
         $validator = Validator::make($request->all(), [
             'user_name' => 'required|string|max:255',
             'user_email' => 'required|email|unique:users,email',
             'user_address' =>'required|nullable|string',
             'user_phone' => 'required|nullable|string|max:10',
             'user_password' => 'required|string',
-            'user_role' => 'required|nullable',
-            'user_shift' => 'required|nullable',
-            'user_sclary'=>'required|nullable',
-            'user_branch'=>'required|nullable',
+            'user_role' => 'nullable',
+            'user_shift' => 'nullable',
+            'user_sclary'=>'nullable',
+            'user_branch'=>'nullable',
             'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);     
-
-        if ($validator->fails()) {
-            Alert::error('Validation Error', 'Some fields are empty')
-                 ->showConfirmButton('Okay');
+      if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $randomId = $this->generateRandomId();
+       
         $profilePhotoPath = null;
         if ($request->hasFile('profile_photo')) {
             $profilePhoto = $request->file('profile_photo');
@@ -90,6 +89,8 @@ class EmployeeController extends Controller
             $profilePhoto->move(public_path('profile_photos'), $profilePhotoName);
             $profilePhotoPath = 'profile_photos/' . $profilePhotoName;
         }
+        
+
         
         $user = new User(); 
         $user->name = $request->input('user_name');
@@ -105,6 +106,7 @@ class EmployeeController extends Controller
         $user->shift=$request->input('user_shift');
         $user->is_delete = 0;
         $user->save();
+
     Alert::success('success','User registered Successifully');
     return redirect()->route('employee');
     }

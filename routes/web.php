@@ -78,7 +78,7 @@ Route::get('/deleated-studentslist/{id}', [App\Http\Controllers\StudentControlle
 
 
 //PDF Route
-Route::get('/generate-pdf',[App\Http\Controllers\PDFController::class,'index'])->middleware('auth');
+// Route::get('/generate-pdf',[App\Http\Controllers\PDFController::class,'index'])->middleware('auth');
 Route::post('/export',[App\Http\Controllers\PDFController::class,'export'])->name('export')->middleware('auth');
 
 
@@ -90,12 +90,16 @@ Route::post('/updatecardetails/{id}', [App\Http\Controllers\CarManagementControl
 Route::get('/deletecar/{id}', [App\Http\Controllers\CarManagementController::class, 'deletecar'])->name('deletecar')->middleware('auth');
 
 
+
+
+
+
 //Plane Management Route
 Route::get('/plane-management',[App\Http\Controllers\PlaneManagementController::class,'planeManagement'])->name('planeManagement')->middleware('auth');
 Route::post('/addPlane-details', [App\Http\Controllers\PlaneManagementController::class,'addPlaneDetails'])->middleware('auth');
 // Route::post('/updateUserActiveStatus', [UserController::class, 'updateUserActiveStatus'])->name('updateUserActiveStatus');
 Route::get('/edit-plandetails',[App\Http\Controllers\PlaneManagementController::class,'editplanDetails'])->name('edit-plandetails')->middleware('auth'); 
-Route::post('/updateplandetails/{id}', [App\Http\Controllers\PlaneManagementController::class, 'updateplandetails'])->name('updatecardetails')->middleware('auth');
+Route::post('/updateplandetails/{id}', [App\Http\Controllers\PlaneManagementController::class, 'updateplandetails'])->name('updateplandetails')->middleware('auth');
 Route::get('/deactivate-plandetails/{id}', [App\Http\Controllers\PlaneManagementController::class, 'deactivateplan'])->name('deactivateplan')->middleware('auth');
 Route::post('/submit-form891',[App\Http\Controllers\PlaneManagementController::class,'submitForm123'])->middleware('auth');
 

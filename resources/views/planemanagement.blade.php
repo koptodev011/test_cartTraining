@@ -73,9 +73,8 @@
                         <!--begin::Toolbar-->
                         <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                             <!--begin::Filter-->
-                            <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click"
+                            <!-- <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click"
                                 data-kt-menu-placement="bottom-end">
-                                <!--begin::Svg Icon | path: icons/duotune/general/gen031.svg-->
                                 <span class="svg-icon svg-icon-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none">
@@ -84,21 +83,14 @@
                                             fill="black" />
                                     </svg>
                                 </span>
-                                <!--end::Svg Icon-->Filter
+                                Filter
                             </button>
-                            <!--begin::Menu 1-->
                             <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true">
-                                <!--begin::Header-->
                                 <div class="px-7 py-5">
                                     <div class="fs-5 text-dark fw-bolder">Filter Options</div>
                                 </div>
-                                <!--end::Header-->
-                                <!--begin::Separator-->
                                 <div class="separator border-gray-200"></div>
-                                <!--end::Separator-->
-                                <!--begin::Content-->
                                 <div class="px-7 py-5" data-kt-user-table-filter="form">
-                                    <!--begin::Input group-->
                                     <div class="mb-10">
                                         <label class="form-label fs-6 fw-bold">Role:</label>
                                         <select class="form-select form-select-solid fw-bolder" data-kt-select2="true"
@@ -136,11 +128,10 @@
                                             d="M18.75 8.25H17.75C17.1977 8.25 16.75 8.69772 16.75 9.25C16.75 9.80228 17.1977 10.25 17.75 10.25C18.3023 10.25 18.75 10.6977 18.75 11.25V18.25C18.75 18.8023 18.3023 19.25 17.75 19.25H5.75C5.19772 19.25 4.75 18.8023 4.75 18.25V11.25C4.75 10.6977 5.19771 10.25 5.75 10.25C6.30229 10.25 6.75 9.80228 6.75 9.25C6.75 8.69772 6.30229 8.25 5.75 8.25H4.75C3.64543 8.25 2.75 9.14543 2.75 10.25V19.25C2.75 20.3546 3.64543 21.25 4.75 21.25H18.75C19.8546 21.25 20.75 20.3546 20.75 19.25V10.25C20.75 9.14543 19.8546 8.25 18.75 8.25Z"
                                             fill="#C4C4C4" />
                                     </svg>
-                                </span>
-                                <!--end::Svg Icon-->Export
-                            </button>
-                            <!--end::Export-->
-                            <!--begin::Add user-->
+                                </span>Export
+                            </button> -->
+
+
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#kt_modal_add_user">
                                 <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
@@ -152,7 +143,7 @@
                                         <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="black" />
                                     </svg>
                                 </span>
-                                <!--end::Svg Icon-->Add User
+                                Add Plans
                             </button>
                             <!--end::Add user-->
                         </div>
@@ -434,9 +425,6 @@
                 </div>
                 <!--end::Card body-->
             </div>
-            <!--end::Card-->
-            <!--begin::Modals-->
-            <!--begin::Modal - Add permissions-->
 
 
 
@@ -447,7 +435,7 @@
                 <div class="modal-dialog modal-dialog-centered mw-650px">
                     <div class="modal-content">
                         <div class="modal-header" id="kt_modal_add_user_header">
-                            <h2 class="fw-bolder">Add Car Details</h2>
+                            <h2 class="fw-bolder">Add Plan Details</h2>
                             <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
                                 <span class="svg-icon svg-icon-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"

@@ -387,14 +387,17 @@
 
 
                                         <div class="menu-item px-3">
-                                            <a class="menu-link px-3">Edit</a>
+                                        <a class="menu-link py-3"
+                                        href="{{ route('edit-cardetails', ['id' => $user->id]) }}">Edit</a>
                                         </div>
 
 
                                         <div class="menu-item px-3">
-
-                                            <a class="menu-link px-3">Delete</a>
+                                        <a class="menu-link px-3"
+                                        href="{{ route('deletecar', ['id' => $user->id]) }}">Delete</a>
                                         </div>
+
+                                        
                                     </div>
                                 </td>
                                 <!--end::Action=-->

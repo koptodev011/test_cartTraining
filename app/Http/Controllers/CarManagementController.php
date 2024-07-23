@@ -18,8 +18,9 @@ class CarManagementController extends Controller
     
     public function carManagement(Request $request)
     {
-        $cars = Car::all();
-        return view('carmanagement', compact('cars'));
+        $cars = Car::where('isdelete', 1)->get();
+        $deletedcars = Car::where('isdelete', 0)->get();
+        return view('carmanagement', compact('cars','deletedcars'));
     }
 
     
@@ -37,7 +38,7 @@ class CarManagementController extends Controller
         $car->car_number = $request->input('car-number');
         $car->fuel_type = $request->input('car-fuel');
         $car->save();
-   
+        return redirect()->route('carManagement');
     }
 
 
@@ -74,6 +75,40 @@ class CarManagementController extends Controller
         return redirect()->route('carManagement')->with('success', 'User updated successfully.');
     }
 
+    // public function updatecardetails(Request $request, $id)
+    // {
+    //     // Validate incoming request data
+    //     $validator = Validator::make($request->all(), [
+    //         'car-name' => 'required|string|max:255',
+    //         'car-number' => 'required',
+    //         'car-fuel' => 'nullable|string',
+    //     ]);
+       
+    //     // If validation fails, return error response
+    //     if ($validator->fails()) {
+    //         return response()->json(['error' => $validator->errors()], 400);
+    //     }
+        
+    //     try {
+    //         // Find the car by ID
+    //         $car = Car::findOrFail($id);
+            
+    //         // Update the car details
+    //         $car->update([
+    //             'car_name' => $request->input('car-name'),
+    //             'car_number' => $request->input('car-number'),
+    //             'fuel_type' => $request->input('car-fuel'),
+    //         ]);
+            
+    //         // Redirect with success message
+    //         return redirect()->route('carManagement')->with('success', 'Car updated successfully.');
+        
+    //     } catch (\Exception $e) {
+    //         // Handle any exceptions (e.g., ModelNotFoundException)
+    //         return redirect()->back()->with('error', 'Failed to update car details.');
+    //     }
+    // }
+
 
 
 
@@ -84,7 +119,7 @@ class CarManagementController extends Controller
         if (!$car) {
             return redirect()->back()->with('error', 'User not found');
         }
-        Car::where('id', $id)->update(['is_delete' => 1]);
+        Car::where('id', $id)->update(['isdelete' => 0]);
         return redirect()->route('carManagement')->with('success', 'User updated successfully.');
     }
 
